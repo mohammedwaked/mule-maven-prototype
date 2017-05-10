@@ -1,0 +1,47 @@
+<mule xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:metadata="http://www.mulesoft.org/schema/mule/metadata" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit-soap="http://www.mulesoft.org/schema/mule/apikit-soap" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+http://www.mulesoft.org/schema/mule/apikit-soap http://www.mulesoft.org/schema/mule/apikit-soap/current/mule-apikit-soap.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd">
+  <http:listener-config name="api-httpListenerConfig" host="0.0.0.0" port="8081" doc:name="HTTP Listener Configuration"/>
+  <apikit-soap:config name="/Hello_Service/Hello_Port/api-config" wsdlUrl="api.wsdl" serviceName="Hello_Service" portName="Hello_Port" doc:name="APIkit SOAP: Configuration"/>
+    <http:request-config name="HTTP_Request_Configuration" protocol="HTTPS" host="hooks.slack.com" port="443" basePath="/" doc:name="HTTP Request Configuration"/>
+  <flow name="api-main">
+    <http:listener path="/Hello_Service/Hello_Port" config-ref="api-httpListenerConfig" doc:name="/Hello_Service/Hello_Port" allowedMethods="POST">
+            <http:response-builder statusCode="200" reasonPhrase="OK"/>
+            <http:error-response-builder statusCode="400" reasonPhrase="ERROR"/>
+        </http:listener>
+    <apikit-soap:router config-ref="/Hello_Service/Hello_Port/api-config" doc:name="SOAP Router"/>
+  </flow>
+  <flow name="sayHello:/Hello_Service/Hello_Port/api-config">
+        <dw:transform-message doc:name="Transform Message" metadata:id="4ee8117e-beeb-47f8-a267-5b1d9b30928e">
+            <dw:input-payload doc:sample="sample_data/string.dwl" mimeType="application/xml"/>
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+
+---
+{
+	"text": payload.sayHello.text
+}
+]]></dw:set-payload>
+        </dw:transform-message>
+        <http:request config-ref="HTTP_Request_Configuration" path="/services/T0G0GH2FP/B59NWN4HX/DCc5bONJbdjcoRNG2leSv1uG" method="POST" doc:name="HTTP POST Call">
+            <http:request-builder>
+                <http:header headerName="Content-Type" value="application/json"/>
+            </http:request-builder>
+        </http:request>
+        <dw:transform-message doc:name="Transform Message" metadata:id="5816a570-4cbc-4702-a53e-fb54a672d9c6">
+            <dw:input-payload mimeType="application/json"/>
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/xml
+%namespace urn urn:examples:helloservice
+---
+{
+	urn#sayHello: {
+		text: "Message received and delivered"
+	}
+}]]></dw:set-payload>
+        </dw:transform-message>
+
+  </flow>
+</mule>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:mock="http://www.mulesoft.org/schema/mule/mock" xmlns:scripting="http://www.mulesoft.org/schema/mule/scripting" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:core="http://www.mulesoft.org/schema/mule/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/mock http://www.mulesoft.org/schema/mule/mock/current/mule-mock.xsd
+http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mule/scripting/current/mule-scripting.xsd">
+    <munit:config name="munit" doc:name="MUnit configuration"/>
+    <spring:beans>
+        <spring:import resource="classpath:notification-app.xml"/>
+    </spring:beans>
+    <munit:test name="new-test-suite-api-mainTest" description="Test">
+        <flow-ref name="api-main" doc:name="Flow-ref to api-main"/>
+    </munit:test>
+    <munit:test name="new-test-suite-sayHello:/Hello_Service/Hello_Port/api-configTest" description="Test">
+        <mock:when messageProcessor=".*:.*" doc:name="Mock">
+            <mock:with-attributes>
+                <mock:with-attribute name="doc:name" whereValue="#['HTTP POST Call']"/>
+            </mock:with-attributes>
+            <mock:then-return payload="#[&quot;ok&quot;]" mimeType="text/html"/>
+        </mock:when>
+        <set-payload value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;urn:sayHello xmlns:urn=&quot;urn:examples:helloservice&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&gt;
+   &lt;text xsi:type=&quot;xsd:string&quot;&gt;Hello, testing soap ui&lt;/text&gt;
+&lt;/urn:sayHello&gt;" mimeType="application/xml" doc:name="Set Payload"/>
+        <flow-ref name="sayHello:/Hello_Service/Hello_Port/api-config" doc:name="sayHello:/Hello_Service/Hello_Port/api-config"/>
+        <scripting:component doc:name="Groovy">
+            <scripting:script engine="Groovy"><![CDATA[flowVars.expectedValue = """<?xml version='1.0' encoding='UTF-8'?><urn:sayHello xmlns:urn="urn:examples:helloservice">  <text>Message received and delivered</text></urn:sayHello>
+""".toString()
+
+return payload]]></scripting:script>
+        </scripting:component>
+        <set-payload value="#[message.payloadAs(java.lang.String).trim().replaceAll(&quot;\n&quot;, &quot;&quot;)]" doc:name="Set Payload"/>
+        <munit:assert-true condition="#[payload.contains('urn:sayHello')]" doc:name="Assert True"/>
+        <munit:assert-true condition="#[payload.contains('Message received and delivered')]" doc:name="Assert True"/>
+    </munit:test>
+</mule>

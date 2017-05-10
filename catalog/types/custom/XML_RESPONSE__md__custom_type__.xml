@@ -1,0 +1,138 @@
+<custom__type__definition>
+  <version>5.2.0.0</version>
+  <typeName class="org.mule.common.metadata.DefaultMetaDataKey">
+    <id>XML_RESPONSE</id>
+    <displayName>XML_RESPONSE</displayName>
+    <category>DEFAULT</category>
+    <metaDataKeyPropertiesManager>
+      <properties>
+        <org.mule.common.metadata.key.property.dsql.DsqlFromMetaDataKeyProperty/>
+      </properties>
+    </metaDataKeyPropertiesManager>
+  </typeName>
+  <metadataModel class="org.mule.common.metadata.DefaultXmlMetaDataModel">
+    <dataType>XML</dataType>
+    <metaDataModelPropertiesManager>
+      <properties>
+        <org.mule.common.metadata.property.xml.SchemaTypeMetaDataProperty>
+          <typeQName>
+            <namespaceURI>urn:examples:helloservice</namespaceURI>
+            <localPart>sayHelloType</localPart>
+            <prefix></prefix>
+          </typeQName>
+        </org.mule.common.metadata.property.xml.SchemaTypeMetaDataProperty>
+        <org.mule.common.metadata.property.TextBasedExampleMetaDataModelProperty>
+          <exampleContent>/Users/mohammed.waked/AnypointStudio/workspaces/adr/notification-app/src/test/resources/response.xml</exampleContent>
+        </org.mule.common.metadata.property.TextBasedExampleMetaDataModelProperty>
+        <org.mule.tooling.metadata.properties.DefinitionEditorModeType>
+          <mode>EXAMPLE</mode>
+          <path>src/test/resources/response.xml</path>
+          <rootElement>sayHello</rootElement>
+        </org.mule.tooling.metadata.properties.DefinitionEditorModeType>
+      </properties>
+    </metaDataModelPropertiesManager>
+    <fields>
+      <org.mule.common.metadata.DefaultMetaDataField>
+        <name>text</name>
+        <model class="org.mule.common.metadata.DefaultSimpleMetaDataModel">
+          <dataType>STRING</dataType>
+          <metaDataModelPropertiesManager>
+            <properties>
+              <org.mule.common.metadata.property.xml.SchemaTypeMetaDataProperty>
+                <typeQName>
+                  <namespaceURI>http://www.w3.org/2001/XMLSchema</namespaceURI>
+                  <localPart>string</localPart>
+                  <prefix></prefix>
+                </typeQName>
+              </org.mule.common.metadata.property.xml.SchemaTypeMetaDataProperty>
+            </properties>
+          </metaDataModelPropertiesManager>
+        </model>
+        <accessType>READ_WRITE</accessType>
+        <metaDataFieldPropertyManager>
+          <properties>
+            <org.mule.common.metadata.property.QNameMetaDataProperty>
+              <name>
+                <namespaceURI></namespaceURI>
+                <localPart>text</localPart>
+                <prefix></prefix>
+              </name>
+            </org.mule.common.metadata.property.QNameMetaDataProperty>
+          </properties>
+        </metaDataFieldPropertyManager>
+      </org.mule.common.metadata.DefaultMetaDataField>
+      <org.mule.common.metadata.DefaultMetaDataField>
+        <name>ns0:encodingStyle</name>
+        <model class="org.mule.common.metadata.DefaultSimpleMetaDataModel">
+          <dataType>STRING</dataType>
+          <metaDataModelPropertiesManager>
+            <properties>
+              <org.mule.common.metadata.property.xml.SchemaTypeMetaDataProperty>
+                <typeQName>
+                  <namespaceURI>http://www.w3.org/2001/XMLSchema</namespaceURI>
+                  <localPart>anyURI</localPart>
+                  <prefix></prefix>
+                </typeQName>
+              </org.mule.common.metadata.property.xml.SchemaTypeMetaDataProperty>
+            </properties>
+          </metaDataModelPropertiesManager>
+        </model>
+        <accessType>READ_WRITE</accessType>
+        <metaDataFieldPropertyManager>
+          <properties>
+            <org.mule.common.metadata.property.QNameMetaDataProperty>
+              <name>
+                <namespaceURI>soapenv</namespaceURI>
+                <localPart>encodingStyle</localPart>
+                <prefix>ns0</prefix>
+              </name>
+            </org.mule.common.metadata.property.QNameMetaDataProperty>
+            <org.mule.common.metadata.property.LabelMetaDataProperty>
+              <label>@ns0:encodingStyle</label>
+            </org.mule.common.metadata.property.LabelMetaDataProperty>
+            <org.mule.common.metadata.property.xml.AttributeMetaDataFieldProperty>
+              <isAttribute>true</isAttribute>
+            </org.mule.common.metadata.property.xml.AttributeMetaDataFieldProperty>
+          </properties>
+        </metaDataFieldPropertyManager>
+      </org.mule.common.metadata.DefaultMetaDataField>
+    </fields>
+    <rootElement>
+      <namespaceURI>urn:examples:helloservice</namespaceURI>
+      <localPart>sayHello</localPart>
+      <prefix>ns1</prefix>
+    </rootElement>
+    <schemas class="org.mule.common.metadata.StringBasedSchemaProvider">
+      <schemas>
+        <string>&lt;xs:schema attributeFormDefault=&quot;unqualified&quot; elementFormDefault=&quot;qualified&quot; xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;
+  &lt;xs:element name=&quot;text&quot; type=&quot;xs:string&quot;/&gt;
+&lt;/xs:schema&gt;</string>
+        <string>&lt;xs:schema attributeFormDefault=&quot;unqualified&quot; elementFormDefault=&quot;qualified&quot; targetNamespace=&quot;soapenv&quot; xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;
+  &lt;xs:attribute name=&quot;encodingStyle&quot; type=&quot;xs:anyURI&quot;/&gt;
+&lt;/xs:schema&gt;</string>
+        <string>&lt;xs:schema attributeFormDefault=&quot;unqualified&quot; elementFormDefault=&quot;qualified&quot; targetNamespace=&quot;urn:examples:helloservice&quot; xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;
+  &lt;xs:element name=&quot;sayHello&quot; type=&quot;urn:sayHelloType&quot; xmlns:urn=&quot;urn:examples:helloservice&quot;/&gt;
+  &lt;xs:complexType name=&quot;sayHelloType&quot;&gt;
+    &lt;xs:sequence&gt;
+      &lt;xs:element ref=&quot;text&quot;/&gt;
+    &lt;/xs:sequence&gt;
+    &lt;xs:attribute ref=&quot;soap:encodingStyle&quot; xmlns:soap=&quot;soapenv&quot;/&gt;
+  &lt;/xs:complexType&gt;
+&lt;/xs:schema&gt;</string>
+      </schemas>
+      <encoding>UTF-8</encoding>
+    </schemas>
+    <namespaceManager>
+      <namespacePrefix>
+        <entry>
+          <string>soapenv</string>
+          <string>ns0</string>
+        </entry>
+        <entry>
+          <string>urn:examples:helloservice</string>
+          <string>ns1</string>
+        </entry>
+      </namespacePrefix>
+    </namespaceManager>
+  </metadataModel>
+</custom__type__definition>

@@ -1,0 +1,16 @@
+{
+    "inputMessageMetadata": {
+        "messagePayload": {
+            "connectorName": "#_custom_mule_metadata_type_#",
+            "typeId": "CHAT_JSON"
+        }
+    },
+    "outputMessageMetadata": {
+        "messagePayload": {
+            "connectorName": "#_custom_mule_metadata_type_#",
+            "typeId": "XML_RESPONSE"
+        }
+    },
+    "id": "5816a570-4cbc-4702-a53e-fb54a672d9c6",
+    "version": "5.2.0.0"
+}
